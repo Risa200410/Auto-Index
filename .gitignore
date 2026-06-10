@@ -1,0 +1,8 @@
+# Mengabaikan Virtual Environment Python
+venv/
+.venv/
+env/
+
+# Mengabaikan file hasil compile Python (sampah cache)
+__pycache__/
+*.pyc
