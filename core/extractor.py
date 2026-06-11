@@ -294,4 +294,7 @@ def run_extraction(pdf_bytes, top_n, nlp, kw_model,
             "pages"  : pages_str,
         })
 
+    # Mengurutkan hasil berdasarkan abjad (A-Z) pada 'keyword'
+    results.sort(key=lambda x: x["keyword"])
+
     return results

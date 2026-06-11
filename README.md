@@ -1,4 +1,4 @@
-# AutoIndex 📑
+# AutoIndex 
 **Sistem Ekstraksi Kata Kunci & Pembuat Indeks Buku Otomatis**
 
 Aplikasi web berbasis Streamlit untuk skripsi — mengekstrak kata kunci dari dokumen PDF menggunakan KeyBERT + Stanza, lalu menghasilkan halaman indeks yang digabungkan ke PDF asli.
