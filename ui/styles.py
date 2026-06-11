@@ -22,6 +22,97 @@ html, body, [class*="css"] {
 .stDeployButton { display: none !important; }
 [data-testid="stToolbar"] { display: none !important; }
 
+/* Paksa sidebar selalu tampil (override localStorage Streamlit) */
+[data-testid="stSidebar"] {
+    transform: none !important;
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+/* Sembunyikan HANYA tombol collapse agar tidak bisa ditutup */
+[data-testid="stSidebarCollapseButton"] { display: none !important; }
+/* collapsedControl (ikon >) dibiarkan ada tapi disembunyikan karena sidebar selalu terbuka */
+[data-testid="collapsedControl"]        { display: none !important; }
+
+/* ════ SIDEBAR STYLING ═══════════════════════════════════════ */
+[data-testid="stSidebar"] {
+    background: linear-gradient(180deg, #3730A3 0%, #4F46E5 60%, #6D28D9 100%) !important;
+    border-right: none !important;
+    min-width: 230px !important;
+    max-width: 230px !important;
+}
+[data-testid="stSidebar"] > div:first-child {
+    padding-top: 2rem !important;
+}
+/* Judul navigasi di sidebar */
+[data-testid="stSidebar"] h3 {
+    color: rgba(255,255,255,0.60) !important;
+    font-size: 0.65rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.12em !important;
+    text-transform: uppercase !important;
+    padding: 0 1.2rem !important;
+    margin-bottom: 0.75rem !important;
+}
+/* Semua teks di sidebar jadi putih */
+[data-testid="stSidebar"] * {
+    color: #fff !important;
+}
+/* Radio button container */
+[data-testid="stSidebar"] [data-testid="stRadio"] > label {
+    color: rgba(255,255,255,0.70) !important;
+    font-size: 0.78rem !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.08em !important;
+    text-transform: uppercase !important;
+    margin-bottom: 0.4rem !important;
+}
+/* Setiap opsi radio */
+[data-testid="stSidebar"] [data-testid="stRadio"] div[role="radiogroup"] label {
+    background: rgba(255,255,255,0.08) !important;
+    border: 1px solid rgba(255,255,255,0.12) !important;
+    border-radius: 10px !important;
+    padding: 0.55rem 1rem !important;
+    margin-bottom: 0.4rem !important;
+    font-size: 0.88rem !important;
+    font-weight: 600 !important;
+    color: rgba(255,255,255,0.85) !important;
+    transition: all 0.2s !important;
+    cursor: pointer !important;
+    display: flex !important;
+    align-items: center !important;
+}
+[data-testid="stSidebar"] [data-testid="stRadio"] div[role="radiogroup"] label:hover {
+    background: rgba(255,255,255,0.18) !important;
+    border-color: rgba(255,255,255,0.30) !important;
+    color: #fff !important;
+}
+/* Opsi yang sedang aktif/terpilih */
+[data-testid="stSidebar"] [data-testid="stRadio"] div[role="radiogroup"] label:has(input:checked) {
+    background: rgba(255,255,255,0.22) !important;
+    border-color: rgba(255,255,255,0.50) !important;
+    color: #fff !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.15) !important;
+}
+/* Sembunyikan lingkaran radio default, tidak perlu karena sudah styled */
+[data-testid="stSidebar"] [data-testid="stRadio"] input[type="radio"] {
+    display: none !important;
+}
+/* Branding kecil di bawah sidebar */
+[data-testid="stSidebar"]::after {
+    content: "📑 AutoIndex";
+    display: block;
+    position: absolute;
+    bottom: 1.5rem;
+    left: 0; right: 0;
+    text-align: center;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: rgba(255,255,255,0.35) !important;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
 .main .block-container {
     max-width: 860px !important;
     padding-top: 1.5rem !important;
