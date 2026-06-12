@@ -89,7 +89,6 @@ if menu == "Ekstraksi Indeks":
     # LANGKAH 2 — Konfigurasi & Ekstraksi
     # ══════════════════════════════════════════════════════════════
     if st.session_state.pdf_bytes:
-        st.markdown("<br>", unsafe_allow_html=True)
         with st.container(border=True, key="step_card_2"):
             step_label(2, "Konfigurasi & Ekstraksi", done=st.session_state.results is not None)
             st.markdown('<p class="step-title">Pengaturan Ekstraksi</p>', unsafe_allow_html=True)
@@ -123,7 +122,6 @@ if menu == "Ekstraksi Indeks":
     # LANGKAH 3 — Tabel hasil
     # ══════════════════════════════════════════════════════════════
     if st.session_state.results:
-        st.markdown("<br>", unsafe_allow_html=True)
         with st.container(border=True, key="step_card_3"):
             step_label(3, "Hasil Ekstraksi", done=True)
             st.markdown('<p class="step-title">Kata Kunci yang Diekstrak</p>', unsafe_allow_html=True)
@@ -137,7 +135,6 @@ if menu == "Ekstraksi Indeks":
                     if p and p != "-":
                         all_pages.add(p)
             render_stats(len(results), len(all_pages))
-            st.markdown("<br>", unsafe_allow_html=True)
 
             if "df_base" not in st.session_state:
                 st.session_state.df_base = pd.DataFrame({
@@ -147,7 +144,7 @@ if menu == "Ekstraksi Indeks":
                     "Halaman"    : [r["pages"]   for r in results],
                 })
 
-            col_all, col_none, _ = st.columns([1, 1, 1.5])
+            col_all, col_none = st.columns([1, 1])
             with col_all:
                 if st.button("Centang Semua", use_container_width=True, key="btn_all"):
                     st.session_state.df_base["Pilih"] = True
@@ -163,11 +160,12 @@ if menu == "Ekstraksi Indeks":
                 st.session_state.df_base,
                 use_container_width=True,
                 hide_index=True,
+                height=500,
                 column_config={
                     "Pilih"      : st.column_config.CheckboxColumn("Pilih", width="small"),
                     "Kata Kunci" : st.column_config.TextColumn("Kata Kunci", disabled=True, width="large"),
                     "Skor Bobot" : st.column_config.NumberColumn("Skor Bobot", disabled=True, format="%.4f", width="small"),
-                    "Halaman"    : st.column_config.TextColumn("Halaman", disabled=True, width="medium"),
+                    "Halaman"    : st.column_config.TextColumn("Halaman", disabled=True, width="large"),
                 },
                 key="kw_table",
             )
@@ -181,7 +179,6 @@ if menu == "Ekstraksi Indeks":
         # ════════════════════════════════════════════════════════
         # LANGKAH 4 — Export
         # ════════════════════════════════════════════════════════
-        st.markdown("<br>", unsafe_allow_html=True)
         with st.container(border=True, key="step_card_4"):
             step_label(4, "Export Indeks ke PDF", done=st.session_state.export_ready)
             st.markdown('<p class="step-title">Buat &amp; Unduh PDF dengan Halaman Indeks</p>', unsafe_allow_html=True)
@@ -243,7 +240,6 @@ elif menu == "Pengujian (Evaluasi)":
                 st.session_state.eval_idx_name = up_idx.name
 
     if st.session_state.eval_main_bytes and st.session_state.eval_idx_bytes:
-        st.markdown("<br>", unsafe_allow_html=True)
         with st.container(border=True, key="eval_card_2"):
             step_label(2, "Jalankan Pengujian", done=st.session_state.eval_results is not None)
             

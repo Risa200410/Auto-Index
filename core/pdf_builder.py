@@ -1,8 +1,10 @@
-# =====================================================================
-# AutoIndex - core/pdf_builder.py
-# Membuat halaman indeks baru dengan ReportLab lalu
-# menggabungkannya ke PDF asli menggunakan PyMuPDF (fitz).
-# =====================================================================
+"""
+=====================================================================
+AutoIndex - core/pdfbuilder.py
+Membuat halaman indeks baru dengan ReportLab lalu
+menggabungkannya ke PDF asli menggunakan PyMuPDF (fitz).
+=====================================================================
+"""
 
 import io
 import fitz  # PyMuPDF
@@ -20,12 +22,8 @@ from reportlab.lib.enums import TA_CENTER, TA_LEFT
 # BUAT HALAMAN INDEKS (REPORTLAB → BytesIO)
 # ─────────────────────────────────────────────
 def build_index_pdf(keywords_with_pages: list[dict]) -> bytes:
-    """
-    keywords_with_pages: list of {"keyword": str, "pages": str}
-    Mengembalikan bytes PDF berisi halaman indeks tanpa garis pembatas tabel/huruf.
-    """
     buffer = io.BytesIO()
-    doc    = SimpleDocTemplate(
+    doc = SimpleDocTemplate(
         buffer,
         pagesize=A4,
         leftMargin=2.5 * cm,
@@ -34,8 +32,8 @@ def build_index_pdf(keywords_with_pages: list[dict]) -> bytes:
         bottomMargin=2.5 * cm,
     )
 
-    styles  = getSampleStyleSheet()
-    W, H    = A4
+    styles = getSampleStyleSheet()
+    W, H = A4
 
     # ── Style kustom ──────────────────────────────────────────────
     title_style = ParagraphStyle(
@@ -62,7 +60,7 @@ def build_index_pdf(keywords_with_pages: list[dict]) -> bytes:
         fontSize=12,
         textColor=colors.HexColor("#1a1a2e"),
         fontName="Helvetica-Bold",
-        spaceBefore=14,  # Sedikit dinaikkan agar jarak antar blok huruf pas
+        spaceBefore=8,  
         spaceAfter=4,
     )
     entry_style = ParagraphStyle(
@@ -72,6 +70,17 @@ def build_index_pdf(keywords_with_pages: list[dict]) -> bytes:
         textColor=colors.HexColor("#222222"),
         fontName="Helvetica",
         leading=14,
+        alignment=TA_LEFT,
+    )
+    # Style khusus untuk kolom nomor halaman -> tetap rata kiri
+    page_entry_style = ParagraphStyle(
+        "PageEntry",
+        parent=styles["Normal"],
+        fontSize=9.5,
+        textColor=colors.HexColor("#222222"),
+        fontName="Helvetica",
+        leading=14,
+        alignment=TA_LEFT,
     )
 
     # ── Urutkan A-Z ──────────────────────────────────────────────
@@ -91,29 +100,31 @@ def build_index_pdf(keywords_with_pages: list[dict]) -> bytes:
                    color=colors.HexColor("#1a1a2e"), spaceAfter=10),
     ]
 
+    # Lebar kolom: kolom keyword diperkecil supaya kolom halaman geser ke kiri (lebih dekat ke kata kunci)
+    colw = [(W - 5 * cm) * 0.40, (W - 5 * cm) * 0.60]
+
     for letter in sorted(groups.keys()):
         story.append(Paragraph(letter, letter_style))
-        
+
         # ── GARIS ABU-ABU DI BAWAH HURUF ABJAD SUDAH DIHAPUS DI SINI ──
 
         # Buat tabel 2 kolom (keyword | halaman) per kelompok huruf
         table_data = []
         for item in groups[letter]:
-            kw    = item["keyword"].capitalize()
+            kw = item["keyword"].capitalize()
             pages = item["pages"]
             table_data.append([
                 Paragraph(kw, entry_style),
-                Paragraph(pages, entry_style),
+                Paragraph(pages, page_entry_style),  # rata tengah
             ])
 
-        col_w = [(W - 5 * cm) * 0.68, (W - 5 * cm) * 0.32]
-        tbl   = Table(table_data, colWidths=col_w)
-        
+        tbl = Table(table_data, colWidths=colw)
+
         # ── MODIFIKASI TABLE STYLE: Menghapus LINEBELOW abu-abu ──
         tbl.setStyle(TableStyle([
-            ("VALIGN",       (0, 0), (-1, -1), "TOP"),
-            ("BOTTOMPADDING",(0, 0), (-1, -1), 4), # Ditambah sedikit padding agar spasi antar kata kustom tetap lega
-            ("TOPPADDING",   (0, 0), (-1, -1), 2),
+            ("VALIGN", (0, 0), (-1, -1), "TOP"),
+            ("BOTTOMPADDING", (0, 0), (-1, -1), 4),  # Ditambah sedikit padding agar spasi antar kata kustom tetap lega
+            ("TOPPADDING", (0, 0), (-1, -1), 2),
         ]))
         story.append(tbl)
         story.append(Spacer(1, 4))
@@ -121,18 +132,15 @@ def build_index_pdf(keywords_with_pages: list[dict]) -> bytes:
     doc.build(story)
     return buffer.getvalue()
 
+
 # ─────────────────────────────────────────────
 # GABUNGKAN HALAMAN INDEKS KE PDF ASLI
 # ─────────────────────────────────────────────
 def merge_index_to_pdf(original_pdf_bytes: bytes,
-                       index_pdf_bytes: bytes) -> bytes:
-    """
-    Menambahkan halaman-halaman dari index_pdf_bytes
-    ke akhir original_pdf_bytes.
-    Mengembalikan bytes PDF hasil gabungan.
-    """
-    orig_doc  = fitz.open(stream=original_pdf_bytes, filetype="pdf")
-    index_doc = fitz.open(stream=index_pdf_bytes,    filetype="pdf")
+                        index_pdf_bytes: bytes) -> bytes:
+   
+    orig_doc = fitz.open(stream=original_pdf_bytes, filetype="pdf")
+    index_doc = fitz.open(stream=index_pdf_bytes, filetype="pdf")
     orig_doc.insert_pdf(index_doc)
     merged_bytes = orig_doc.write()
     orig_doc.close()

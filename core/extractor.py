@@ -267,7 +267,7 @@ def run_extraction(pdf_bytes, top_n, nlp, kw_model,
             phrase_candidates.append((kw, score, label))
 
     _prog(4, 5, "Menghapus duplikat (Jaccard)...")
-    filtered = redundancy_filtering(phrase_candidates)[:top_n]
+    filtered = redundancy_filtering(phrase_candidates)[:top_n + 10]  # buffer ekstra agar hasil akhir tetap top_n
 
     _prog(5, 5, "Memetakan halaman...")
     results = []
@@ -293,6 +293,9 @@ def run_extraction(pdf_bytes, top_n, nlp, kw_model,
             "score"  : round(score, 4),
             "pages"  : pages_str,
         })
+
+    # Batasi ke top_n sebelum diurutkan (buffer sudah terpakai untuk antisipasi keyword tanpa halaman)
+    results = results[:top_n]
 
     # Mengurutkan hasil berdasarkan abjad (A-Z) pada 'keyword'
     results.sort(key=lambda x: x["keyword"])
