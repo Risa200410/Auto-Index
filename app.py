@@ -7,8 +7,8 @@ import pandas as pd
 import streamlit as st
 
 st.set_page_config(
-    page_title="AutoIndex",
-    page_icon="📑📑📑",
+    page_title="AutoIndexxx",
+    page_icon="📑",
     layout="centered",
     initial_sidebar_state="expanded", # Expanded because we have sidebar now
 )
