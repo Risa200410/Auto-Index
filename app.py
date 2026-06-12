@@ -7,7 +7,7 @@ import pandas as pd
 import streamlit as st
 
 st.set_page_config(
-    page_title="AutoIndexxx",
+    page_title="AutoIndex",
     page_icon="📑",
     layout="centered",
     initial_sidebar_state="expanded", # Expanded because we have sidebar now
@@ -31,7 +31,7 @@ render_header()
 st.sidebar.markdown("### Menu Navigasi")
 menu = st.sidebar.radio(
     "",
-    ["Ekstraksi Indeks", "Pengujian (Evaluasi)"]
+    ["Ekstraksi Indek", "Pengujian (Evaluasi)"]
 )
 
 # ── Session state untuk Menu 1 ──────────────────────────────────────────────
