@@ -31,7 +31,7 @@ render_header()
 st.sidebar.markdown("### Menu Navigasi")
 menu = st.sidebar.radio(
     "",
-    ["Ekstraksi Indek", "Pengujian (Evaluasi)"]
+    ["Ekstraksi Indeks", "Pengujian (Evaluasi)"]
 )
 
 # ── Session state untuk Menu 1 ──────────────────────────────────────────────
