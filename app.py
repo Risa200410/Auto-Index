@@ -28,7 +28,6 @@ def get_models():
 
 render_header()
 
-st.sidebar.markdown("### Menu Navigasi")
 menu = st.sidebar.radio(
     "",
     ["Ekstraksi Indeks", "Pengujian (Evaluasi)"]

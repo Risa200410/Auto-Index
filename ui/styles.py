@@ -18,31 +18,31 @@ html, body, [class*="css"] {
     background-size: 26px 26px !important;
 }
 
-#MainMenu, footer, header { visibility: hidden; }
-.stDeployButton { display: none !important; }
-[data-testid="stToolbar"] { display: none !important; }
-
-/* Paksa sidebar selalu tampil (override localStorage Streamlit) */
-[data-testid="stSidebar"] {
-    transform: none !important;
-    display: flex !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-}
-/* Sembunyikan HANYA tombol collapse agar tidak bisa ditutup */
-[data-testid="stSidebarCollapseButton"] { display: none !important; }
-/* collapsedControl (ikon >) dibiarkan ada tapi disembunyikan karena sidebar selalu terbuka */
-[data-testid="collapsedControl"]        { display: none !important; }
+MainMenu, footer { visibility: hidden; }
+[data-testid="stAppDeployButton"] { display: none !important; }
+[data-testid="stMainMenuButton"] { display: none !important; }
 
 /* ════ SIDEBAR STYLING ═══════════════════════════════════════ */
 [data-testid="stSidebar"] {
     background: linear-gradient(180deg, #3730A3 0%, #4F46E5 60%, #6D28D9 100%) !important;
     border-right: none !important;
-    min-width: 230px !important;
-    max-width: 230px !important;
 }
-[data-testid="stSidebar"] > div:first-child {
+/*[data-testid="stSidebar"] > div:first-child {
     padding-top: 2rem !important;
+}*/
+
+[data-testid="stSidebarHeader"] {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+}
+
+[data-testid="stSidebarHeader"]::before {
+    content: "Menu Navigasi";
+    color: white;
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin-left: 1rem;
 }
 /* Judul navigasi di sidebar */
 [data-testid="stSidebar"] h3 {
