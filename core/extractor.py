@@ -21,7 +21,7 @@ FOOTER_MARGIN       = 50
 SIMILARITY_THRESHOLD = 0.6   # Jaccard – redundancy filtering
 MIN_WORDS            = 1
 MAX_WORDS            = 3
-CHUNK_SIZE           = 300
+CHUNK_SIZE           = 100
 
 
 # ─────────────────────────────────────────────
