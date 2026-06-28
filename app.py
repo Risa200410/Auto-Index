@@ -21,7 +21,7 @@ from ui.components import (
 
 inject_css()
 
-@st.cache_resource(show_spinner="Memuat model AI (hanya sekali)…")
+@st.cache_resource(show_spinner="Loading…")
 def get_models():
     from core.extractor import load_models
     return load_models()

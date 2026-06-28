@@ -55,7 +55,7 @@ class StepProgress:
         self._status.caption(f"⚙️ {msg}")
 
     def done(self):
-        self._bar.progress(100, text="✅ Selesai!")
+        self._bar.progress(100, text="Selesai!")
         self._status.empty()
 
 

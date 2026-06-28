@@ -267,7 +267,7 @@ def run_extraction(pdf_bytes, top_n, nlp, kw_model,
             phrase_candidates.append((kw, score, label))
 
     _prog(4, 5, "Menghapus duplikat (Jaccard)...")
-    filtered = redundancy_filtering(phrase_candidates)[:top_n + 10]  # buffer ekstra agar hasil akhir tetap top_n
+    filtered = redundancy_filtering(phrase_candidates)  # jangan potong di sini; biarkan page-mapping filter dulu
 
     _prog(5, 5, "Memetakan halaman...")
     results = []
