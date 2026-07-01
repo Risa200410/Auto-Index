@@ -93,7 +93,7 @@ if menu == "Ekstraksi Indeks":
             st.markdown('<p class="step-title">Pengaturan Ekstraksi</p>', unsafe_allow_html=True)
             st.markdown('<p class="step-desc">Tentukan jumlah kata kunci, lalu klik tombol untuk memulai proses.</p>', unsafe_allow_html=True)
 
-            top_n = st.slider("Jumlah maksimum kata kunci (Top-N)", 10, 150, 62, 1)
+            top_n = st.slider("Jumlah maksimum kata kunci (Top-N)", 10, 300, 50, 1)
 
             col_btn, _ = st.columns([1, 3])
             with col_btn:
@@ -253,7 +253,7 @@ elif menu == "Pengujian (Evaluasi)":
                     gt_keywords = extract_index_from_pdf_bytes(st.session_state.eval_idx_bytes)
                 
                 top_n = len(gt_keywords)
-                st.toast(f"Ditemukan {top_n} kata kunci ground truth. Menyesuaikan Top N ke {top_n}.", icon="ℹ️")
+                st.toast(f"Ditemukan {top_n} kata kunci ground truth. Menyesuaikan Top N ke {top_n}.")
 
                 progress = StepProgress(total=5)
                 with st.spinner("Mengekstrak Kata Kunci dari Buku..."):

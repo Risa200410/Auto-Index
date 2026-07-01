@@ -38,7 +38,7 @@ def card_close():
 def render_file_badge(name: str, size_kb: float):
     st.markdown(f"""
     <div class="file-badge">
-        ✅ &nbsp;<strong>{name}</strong> &nbsp;·&nbsp; {size_kb:.1f} KB
+        &nbsp;<strong>{name}</strong> &nbsp;·&nbsp; {size_kb:.1f} KB
     </div>
     """, unsafe_allow_html=True)
 
