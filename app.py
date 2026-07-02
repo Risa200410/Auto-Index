@@ -190,9 +190,10 @@ if menu == "Ekstraksi Indeks":
             if export_clicked and n_selected > 0:
                 selected = edited_df[edited_df["Pilih"] == True]
                 kw_list  = [{"keyword": r["Kata Kunci"], "pages": r["Halaman"]} for _, r in selected.iterrows()]
-                with st.spinner("Membuat halaman indeks…"):
+                with st.spinner(""):
                     from core.pdf_builder import build_index_pdf, merge_index_to_pdf
-                    merged = merge_index_to_pdf(st.session_state.pdf_bytes, build_index_pdf(kw_list))
+                    # BENAR: Cukup masukkan list kata kuncinya langsung sebagai argumen kedua
+                    merged = merge_index_to_pdf(st.session_state.pdf_bytes, kw_list)
                 st.session_state.export_bytes = merged
                 st.session_state.export_ready = True
                 st.success(f"PDF berhasil dibuat dengan {n_selected} kata kunci!")
@@ -247,35 +248,35 @@ elif menu == "Pengujian (Evaluasi)":
 
             if st.button("Ekstrak dan Evaluasi", use_container_width=True):
                 nlp, kw_model = get_models()
-                
-                with st.spinner("Mengekstrak Indeks Ground Truth..."):
+
+                with st.spinner(""):
                     from core.evaluator import extract_index_from_pdf_bytes, calculate_metrics_dual
                     gt_keywords = extract_index_from_pdf_bytes(st.session_state.eval_idx_bytes)
-                
+
                 top_n = len(gt_keywords)
                 st.toast(f"Ditemukan {top_n} kata kunci ground truth. Menyesuaikan Top N ke {top_n}.")
 
                 progress = StepProgress(total=5)
-                with st.spinner("Mengekstrak Kata Kunci dari Buku..."):
+                with st.spinner(""):
                     from core.extractor import run_extraction
                     extracted_res = run_extraction(
                         pdf_bytes=st.session_state.eval_main_bytes,
-                        top_n=top_n, 
-                        nlp=nlp, 
+                        top_n=top_n,
+                        nlp=nlp,
                         kw_model=kw_model,
                         progress_callback=lambda s, t, m: progress.update(s, m)
                     )
                 progress.done()
 
-                with st.spinner("Menghitung Metrik Evaluasi..."):
+                with st.spinner(""):
                     metrics = calculate_metrics_dual(extracted_res, gt_keywords, fuzzy_threshold=fuzzy_thresh)
-                    
-                    st.session_state.eval_results = {
-                        "metrics": metrics,
-                        "extracted": extracted_res,
-                        "gt_keywords": gt_keywords,
-                        "top_n": top_n
-                    }
+
+                st.session_state.eval_results = {
+                    "metrics": metrics,
+                    "extracted": extracted_res,
+                    "gt_keywords": gt_keywords,
+                    "top_n": top_n,
+                }
                 st.rerun()
 
     if st.session_state.eval_results:

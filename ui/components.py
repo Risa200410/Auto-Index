@@ -46,17 +46,14 @@ def render_file_badge(name: str, size_kb: float):
 class StepProgress:
     def __init__(self, total: int):
         self.total   = total
-        self._bar    = st.progress(0, text="Memulai…")
-        self._status = st.empty()
+        self._bar    = st.progress(0)
 
     def update(self, step: int, msg: str):
         pct = int(step / self.total * 100)
-        self._bar.progress(pct, text=f"**Langkah {step}/{self.total}** — {msg}")
-        self._status.caption(f"⚙️ {msg}")
+        self._bar.progress(pct)
 
     def done(self):
-        self._bar.progress(100, text="Selesai!")
-        self._status.empty()
+        self._bar.progress(100)
 
 
 def render_stats(n_keywords: int, n_pages_covered: int):

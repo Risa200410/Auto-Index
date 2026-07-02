@@ -29,10 +29,7 @@ INVALID_NP_POS = {"VERB", "CCONJ", "SCONJ", "ADP", "PRON"}
 HEAD_POS = {"NOUN", "PROPN"}
 
 
-# =====================================================================
 # BAGIAN 1 — EKSTRAKSI TEKS PDF (PER HALAMAN + NOMOR CETAK)
-# =====================================================================
-
 def detect_printed_page_number(page, physical_num, header_margin=50, footer_margin=50):
     """
     Membaca angka di area header/footer untuk menemukan nomor halaman
@@ -98,10 +95,7 @@ def extract_text_by_page(pdf_path, exclude_pages=None,
     return pages_dict
 
 
-# =====================================================================
 # BAGIAN 2 — CLEANING & NORMALISASI
-# =====================================================================
-
 def split_merged_words(text, max_word_len=15):
     words = text.split()
     result = []
@@ -148,9 +142,7 @@ def extract_index_from_separate_file(index_pdf_path, index_pages):
     return list(index_keywords)
 
 
-# =====================================================================
 # BAGIAN 3 — KEYBERT SCORING (PER HALAMAN + CHUNKING)
-# =====================================================================
 
 def process_keywords_by_pages(pages_dict, kw_model, chunk_size=100):
     keyword_scores = {}
@@ -191,9 +183,7 @@ def find_keyword_pages(keyword, pages_dict):
     return sorted(set(matched), key=lambda x: (isinstance(x, str), x))
 
 
-# =====================================================================
 # BAGIAN 4 — POS FILTERING STANZA (BATCH, HEAD-FIRST BI)
-# =====================================================================
 
 def load_stanza_pipeline():
     kwargs = dict(lang="id", processors="tokenize,pos", tokenize_pretokenized=True, verbose=False)
@@ -262,9 +252,7 @@ def filter_noun_phrases_batch(keywords, nlp, batch_size=500):
     return passed, rejected
 
 
-# =====================================================================
 # BAGIAN 5 — REDUNDANCY FILTERING (JACCARD)
-# =====================================================================
 
 def jaccard_similarity(a, b):
     sa, sb = set(a.split()), set(b.split())
@@ -288,9 +276,7 @@ def redundancy_filtering(keywords, similarity_threshold=SIMILARITY_THRESHOLD):
     return final
 
 
-# =====================================================================
 # BAGIAN 6 — EVALUASI & METRIK (SILENT)
-# =====================================================================
 
 def string_similarity(a, b):
     return SequenceMatcher(None, a, b).ratio()
@@ -355,10 +341,7 @@ def calculate_metrics(extracted_keywords, ground_truth):
     return prec_e, rec_e, f1_e
 
 
-# =====================================================================
 # BAGIAN INTERFACE UTAMA UNTUK STREAMLIT
-# =====================================================================
-
 def run_extraction(pdf_bytes, top_n, nlp, kw_model, progress_callback=None):
     """Run pipeline from PDF bytes (used by Streamlit UI) without print clutter."""
     
